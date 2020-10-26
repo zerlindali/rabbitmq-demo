@@ -33,6 +33,7 @@ public class Sender {
         // 创建MQ连接
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
+        factory.setVirtualHost("/myvirtual");
 
         try(Connection connection = factory.newConnection();
             Channel channel = connection.createChannel()){

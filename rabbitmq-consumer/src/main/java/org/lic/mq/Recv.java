@@ -34,6 +34,7 @@ public class Recv {
         // 连接到mq服务器
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
+        factory.setVirtualHost("/myvirtual");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         return channel;

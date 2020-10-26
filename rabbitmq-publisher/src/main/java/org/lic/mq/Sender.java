@@ -5,6 +5,9 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author ZerlindaLi create at 2020/10/26 11:24
  * @version 1.0.0
@@ -26,6 +29,13 @@ public class Sender {
     private final static String BINDING_KEY = "*.introduce";
     // 广播队列名称
     private final static String FANOUT_QUEUE_NAME = "my fanout queue";
+    // 原队列
+    private final static String MY_NORMAL_QUEUE = "my narmal queue";
+    // 死信交换机
+    private final static String MY_DEAD_LETTER_EXCHANGE = "my dead letter exchange";
+    // 死信队列
+    private final static String MY_DEAD_QUEUE = "my dead queue";
+
     public static void main(String[] args) {
 
 
@@ -68,6 +78,20 @@ public class Sender {
             channel.basicPublish(FANOUT_EXCHANGE, "", null, message3.getBytes());
             System.out.println(FANOUT_EXCHANGE + " send '" + message3 +"'");
 
+            // 使用死信交换机和死信队列，完成延迟消息发送
+            // 声明死信交换机和死信队列
+            channel.exchangeDeclare(MY_DEAD_LETTER_EXCHANGE, BuiltinExchangeType.TOPIC);
+            channel.queueDeclare(MY_DEAD_QUEUE, false, false, false, null);
+            // 指定队列的死信交换机
+            Map<String, Object> arguments = new HashMap<String, Object>();
+            arguments.put("x-dead-letter-exchange", MY_DEAD_LETTER_EXCHANGE);
+            arguments.put("x-expires", "9000"); // 设置队列的TTL
+            channel.queueDeclare(MY_NORMAL_QUEUE, false, false, false, arguments);
+            // 将死信交换机绑定死信队列
+            channel.queueBind(MY_DEAD_QUEUE, MY_DEAD_LETTER_EXCHANGE, "#");
+            String message4 = "I want to test dead letter exchange";
+            channel.basicPublish(DIRECT_EXCHANGE, "my.delay.queue", null, message4.getBytes());
+            System.out.println(MY_DEAD_QUEUE + " send '" + message4 +"'");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

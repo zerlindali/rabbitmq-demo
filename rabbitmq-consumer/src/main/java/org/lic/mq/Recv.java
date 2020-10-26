@@ -16,6 +16,8 @@ public class Recv {
     // 队列名称
     private final static String QUEUE_NAME = "my first queue";
     private final static String TOPIC_QUEUE_NAME = "INTRODUCE";
+    // 死信队列
+    private final static String MY_DEAD_QUEUE = "my dead queue";
     public static void main(String[] args) throws Exception{
         Channel Channel = getChannel();
 
@@ -28,6 +30,8 @@ public class Recv {
         Channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {});
 
         Channel.basicConsume(TOPIC_QUEUE_NAME, true, deliverCallback, consumerTag -> {});
+
+        Channel.basicConsume(MY_DEAD_QUEUE, true, deliverCallback, consumerTag -> {});
     }
 
     private static Channel getChannel() throws Exception{

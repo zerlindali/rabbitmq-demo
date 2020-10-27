@@ -19,6 +19,7 @@
 - JDK 1.8
 ### 工程结构  
   生产者 rabbitmq-publisher-springboot
+  
   消费者 rabbitmq-consumer-springboot
 ### 开发步骤
   消费者：

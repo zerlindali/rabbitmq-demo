@@ -33,5 +33,7 @@
 4. 执行测试方法发送消息
 ### 其他说明
   Spring AMQP默认使用的消息转换器是SimpleMessageConverter。
+  
   Jackson2JsonMessageConverter 用于将消息转换为JSON后发送。
+  
   FourthConsumer里面实现了Java对象与JSON报文的转换。

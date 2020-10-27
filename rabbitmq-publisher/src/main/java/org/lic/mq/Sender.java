@@ -30,7 +30,7 @@ public class Sender {
     // 广播队列名称
     private final static String FANOUT_QUEUE_NAME = "my fanout queue";
     // 原队列
-    private final static String MY_NORMAL_QUEUE = "my narmal queue";
+    private final static String MY_NORMAL_QUEUE = "my normal queue";
     // 死信交换机
     private final static String MY_DEAD_LETTER_EXCHANGE = "my dead letter exchange";
     // 死信队列
@@ -85,15 +85,22 @@ public class Sender {
             // 指定队列的死信交换机
             Map<String, Object> arguments = new HashMap<String, Object>();
             arguments.put("x-dead-letter-exchange", MY_DEAD_LETTER_EXCHANGE);
-            arguments.put("x-expires", "9000"); // 设置队列的TTL
+            arguments.put("x-expires", 9000); // 设置队列的TTL
+            arguments.put("x-max-length", 3);
             channel.queueDeclare(MY_NORMAL_QUEUE, false, false, false, arguments);
+            channel.queueBind(MY_NORMAL_QUEUE, DIRECT_EXCHANGE, "my.delay.queue");
             // 将死信交换机绑定死信队列
             channel.queueBind(MY_DEAD_QUEUE, MY_DEAD_LETTER_EXCHANGE, "#");
-            String message4 = "I want to test dead letter exchange";
-            channel.basicPublish(DIRECT_EXCHANGE, "my.delay.queue", null, message4.getBytes());
-            System.out.println(MY_DEAD_QUEUE + " send '" + message4 +"'");
+
+            for(int i = 0;  i < 10; i++){
+                String message4 = "I want to test dead letter exchange '" + i +"'";
+                channel.basicPublish(DIRECT_EXCHANGE, "my.delay.queue", null, message4.getBytes());
+                System.out.println(MY_DEAD_QUEUE + " send '" + message4 +"'");
+            }
+
+
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

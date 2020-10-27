@@ -17,7 +17,7 @@ public class Recv {
     private final static String QUEUE_NAME = "my first queue";
     private final static String TOPIC_QUEUE_NAME = "INTRODUCE";
     // 死信队列
-    private final static String MY_DEAD_QUEUE = "my dead queue";
+    private final static String MY_DEAD_QUEUE = "my normal queue";
     public static void main(String[] args) throws Exception{
         Channel Channel = getChannel();
 

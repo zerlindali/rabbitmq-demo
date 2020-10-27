@@ -11,6 +11,8 @@
   <modules>
     <module>rabbitmq-publisher</module>
     <module>rabbitmq-consumer</module>
+    <module>rabbitmq-consumer-springboot</module>
+    <module>rabbitmq-publisher-springboot</module>
   </modules>
 
   <name>rabbitmq-demo</name>

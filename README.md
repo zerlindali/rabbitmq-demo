@@ -18,8 +18,9 @@
 - Spring Boot 2.3.4.RELEASE
 - JDK 1.8
 ### 工程结构  
-生产者 rabbitmq-publisher-springboot:消息的
-消费者 rabbitmq-consumer-springboot
+  生产者 rabbitmq-publisher-springboot
+  
+  消费者 rabbitmq-consumer-springboot
 ### 开发步骤
   消费者：
 1. 定义交换机，队列，绑定交换机和队列
